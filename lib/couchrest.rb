@@ -13,9 +13,18 @@
 #    limitations under the License.
 
 require "rubygems"
-gem 'json'
-require 'json'
-gem 'rest-client'
+if defined?(ActiveSupport::JSON)
+  module ActiveSupport
+    module JSON 
+      def self.parse(json, opts = {})
+        decode(json)
+      end
+    end
+  end
+  JSON = ActiveSupport::JSON
+else
+  require 'json'
+end
 require 'rest_client'
 
 $:.unshift File.dirname(__FILE__) unless
